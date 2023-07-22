@@ -19,3 +19,26 @@ Tools > Device Manager > Create device > 任意のCategori 選択 > 任意の機
 以下を参考に、`Android Studio`を完全アンインストールして、再度インストールしてからビルドしてみてください。
 
 chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://gihyo.jp/assets/files/book/2021/978-4-297-12138-9/download/AndroidStudio_Delete_20230120.pdf
+
+---
+
+## 教材
+https://developer.android.com/codelabs/basic-android-kotlin-training-dice-roller-images?hl=ja#6
+
+## OpenAPI Generator でAndroid コードを自動生成する
+https://qiita.com/warahiko/items/3676f1164f4619e8debc
+
+## git
+https://github.com/google-developer-training/android-basics-kotlin-dice-roller-with-images-app-solution/tree/master
+
+## ビルド方法
+
+View > Tool Windows > Terminal
+
+---
+
+## 不具合
+
+### imageView <ImageView>: Insufficient image color contrast ratio
+
+コンテキスト メニューあり
