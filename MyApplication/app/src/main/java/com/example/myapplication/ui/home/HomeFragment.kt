@@ -5,10 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.myapplication.R
 import com.example.myapplication.business.usecases.DiceUseCase
 import com.example.myapplication.databinding.FragmentHomeBinding
+import kotlinx.coroutines.NonDisposableHandle.parent
 
 class HomeFragment : Fragment() {
 
@@ -56,19 +59,52 @@ class HomeFragment : Fragment() {
         // HandlerとRunnableを使用して、サイコロがランダムで面を変えるようにする
         dice.runDice()
 
+        val listView = binding.listView
+        var arrayAdapter = ArrayAdapter<DiceRollData>(requireContext(), android.R.layout.simple_list_item_1)
+        listView.adapter = arrayAdapter
+
         //ボタンクリックイベントリスナー設定
         val clkBtn = binding.button
         clkBtn.setOnClickListener {
-            dice.switchStartStopClick()
+
+            var diceNo = dice.switchStartStopClick()
+            if (diceNo > 0) {
+
+                var cnt = listView.childCount
+                val dataList = arrayListOf<DiceRollData>()
+
+                for(i in 0..cnt) {
+                    val wkRecord = listView.getChildAt(i)
+                    if(wkRecord != null) {
+                        var wkResult = DiceRollData()
+                        wkResult.no = wkRecord.findViewById<TextView>(R.id.textView).text.toString()
+                        wkResult.rollResult = wkRecord.findViewById<TextView>(R.id.textView2).text.toString()
+                        dataList.add(wkResult)
+                    }
+                }
+
+                dataList.add(DiceRollData().apply {
+                    no = addRollNo(cnt).toString() + "回目"
+                    rollResult = diceNo.toString()
+                })
+
+                val customAdapter = DiceRollResultListAdapter(requireContext(), dataList)
+                listView.adapter = customAdapter
+
+            }
         }
 
+    }
+
+    private fun addRollNo(no : Int) : Int {
+        var wkNo = no
+        return ++wkNo
     }
 
     /**
      * Viewが破棄される際に実行
      */
     override fun onDestroyView() {
-        Log.i("test","test1")
         // handler NullPointerException 対応
         dice.handler.removeCallbacks(dice.timer)
         // status 初期化
@@ -78,3 +114,5 @@ class HomeFragment : Fragment() {
     }
 
 }
+
+

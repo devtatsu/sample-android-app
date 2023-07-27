@@ -19,6 +19,8 @@ class DiceUseCase {
 
     val handler = Handler(Looper.getMainLooper())
 
+    var diceNo : Int = 0
+
     /**
      * 定数定義
      */
@@ -50,7 +52,7 @@ class DiceUseCase {
     }
 
     @SuppressLint("SetTextI18n")
-    fun switchStartStopClick() {
+    fun switchStartStopClick() : Int {
 
         val btn = fhb?.button
 
@@ -58,11 +60,14 @@ class DiceUseCase {
             btn?.text = "STOP"
             handler.post(timer)
             statusflag = true
+            diceNo = 0
         } else {
             btn?.text = "START"
             handler.removeCallbacks(timer)
             statusflag = false
         }
+
+        return diceNo
 
     }
 
@@ -70,10 +75,7 @@ class DiceUseCase {
      * Do a random dice roll and return the result.
      */
     private fun roll(): Int {
-        val range = (1..6).random()
-        Log.i("testClick",range.toString())
-
-        return range
+        return (1..6).random()
     }
 
     private fun rollDice(fhb : FragmentHomeBinding) {
@@ -92,6 +94,8 @@ class DiceUseCase {
             5 -> R.drawable.dice_5
             else -> R.drawable.dice_6
         }
+
+        diceNo = diceRoll
 
         // Update the ImageView with the correct drawable resource ID
         diceImage.setImageResource(drawableResource)
